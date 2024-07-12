@@ -53,6 +53,14 @@ helm upgrade --install $RELEASE_NAME typesense-unofficial/typesense \
     --create-namespace 
 ```
 
+> [!TIP]
+> You can easily create a random admin API key with the following command:
+>
+> ```shell
+> sudo apt install rand -y
+> export ADMIN_API_KEY=$(openssl rand -base64 14)
+> ```
+
 ### Uninstalling the chart
 
 ```shell
