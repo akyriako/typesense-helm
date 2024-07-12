@@ -1,0 +1,151 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "typesense.fullname" . }}-service-account
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "typesense.fullname" . }}-role
+  labels:
+    app.kubernetes.io/name: {{ include "typesense.fullname" . }}
+rules:
+- apiGroups: [""]
+  resources: ["endpoints"]
+  verbs: ["get", "watch", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "typesense.fullname" . }}-role-binding
+  labels:
+    app.kubernetes.io/name: {{ include "typesense.fullname" . }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "typesense.fullname" . }}-role
+subjects:
+- kind: ServiceAccount
+  name: {{ include "typesense.fullname" . }}-service-account
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "typesense.fullname" . }}-nodeslist
+  labels:
+  {{- include "typesense.labels" . | nindent 4 }}
+data:
+  nodes: {{ .Release.Name }}-ts-0.{{ .Release.Name }}-svc.{{ .Release.Namespace }}.svc.cluster.local:8107:8108,{{ .Release.Name }}-ts-1.{{ .Release.Name }}-svc.{{ .Release.Namespace }}.svc.cluster.local:8107:8108,{{ .Release.Name }}-ts-2.{{ .Release.Name }}-svc.{{ .Release.Namespace }}.svc.cluster.local:8107:8108
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "typesense.fullname" . }}-api-keys
+  labels:
+  {{- include "typesense.labels" . | nindent 4 }}
+data:
+  typesense-api-key: {{ required "typesense.apiKey is required" .Values.typesense.apiKey
+    | b64enc | quote }}
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "typesense.fullname" . }}-ts
+  labels:
+    app: typesense
+spec:
+  serviceName: {{ include "typesense.fullname" . }}-svc
+  podManagementPolicy: Parallel
+  replicas: 3
+  selector:
+    matchLabels:
+      app: typesense
+  template:
+    metadata:
+      labels:
+        app: typesense
+    spec:
+      containers:
+        - name: typesense
+          image: typesense/typesense:26.0
+          env:
+          - name: TYPESENSE_API_KEY
+            valueFrom:
+              secretKeyRef:
+                key: typesense-api-key
+                name: {{ include "typesense.fullname" . }}-api-keys
+          - name: TYPESENSE_NODES
+            value: "/usr/share/typesense/nodes"
+          - name: TYPESENSE_DATA_DIR
+            value: "/usr/share/typesense/data"
+          - name: TYPESENSE_API_PORT
+            value: {{ required "typesense.apiPort is required" .Values.typesense.apiPort | quote }}
+          - name: TYPESENSE_PEERING_PORT
+            value: {{ required "typesense.peeringPort is required" .Values.typesense.peeringPort | quote }}
+          - name: TYPESENSE_ENABLE_CORS
+            value: {{ required "typesense.cors.enabled is required" .Values.typesense.cors.enabled | quote }}
+          - name: TYPESENSE_CORS_DOMAINS
+            value: {{ required "typesense.cors.domains is required" .Values.typesense.cors.domains }}
+          - name: TYPESENSE_RESET_PEERS_ON_ERROR
+            value: {{ required "typesense.resetPeersOnError is required" .Values.typesense.resetPeersOnError | quote }}       
+          ports:
+          - containerPort: 8108
+            name: http
+          resources:
+            limits:
+              cpu: 1024m
+              memory: 512Mi
+            requests:
+              cpu: 128m
+              memory: 112Mi
+          volumeMounts:
+          - mountPath: /usr/share/typesense
+            name: nodeslist
+          - mountPath: /usr/share/typesense/data
+            name: data
+        - name: peer-resolver
+          image: akyriako78/typesense-peer-resolver:v0.1.0-dev.3
+          command:
+            - "/opt/tspr"
+            - "-namespace={{ .Release.Namespace }}"
+            - "-service={{ include "typesense.fullname" . }}-svc"
+          volumeMounts:
+          - name: nodeslist
+            mountPath: /usr/share/typesense
+      serviceAccountName: {{ include "typesense.fullname" . }}-service-account
+      securityContext:
+        fsGroup: 2000
+        runAsGroup: 3000
+        runAsNonRoot: true
+        runAsUser: 10000
+      terminationGracePeriodSeconds: 300
+      volumes:
+      - name: nodeslist
+        emptyDir: {}
+  updateStrategy: {}
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: {{ required "typesense.storage.size is required" .Values.typesense.storage.size }}
+      storageClassName: {{ required "typesense.storage.storageClassName is required" .Values.typesense.storage.storageClassName }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "typesense.fullname" . }}-svc
+  labels:
+  {{- include "typesense.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  publishNotReadyAddresses: true
+  selector:
+    app: typesense
+  ports:
+  - name: http
+    port: {{ required "typesense.apiPort is required" .Values.typesense.apiPort }}
+    targetPort: 8108

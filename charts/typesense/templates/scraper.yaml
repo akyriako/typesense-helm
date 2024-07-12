@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "typesense.fullname" . }}-scraper-config
+  labels:
+  {{- include "typesense.labels" . | nindent 4 }}
+data:
+  config.json: "{\"index_name\":\"docs-next\",\"start_urls\":[\"http://{{ .Values.scraper.targetUrl }}/\"],\"sitemap_urls\":[\"http://{{ .Values.scraper.targetUrl }}/sitemap.xml\"],\"sitemap_alternate_links\":true,\"stop_urls\":[\"/tests\"],\"selectors\":{\"lvl0\":{\"selector\":\"(//ul[contains(@class,'menu__list')]//a[contains(@class, 'menu__link menu__link--sublist menu__link--active')]/text() | //nav[contains(@class, 'navbar')]//a[contains(@class, 'navbar__link--active')]/text())[last()]\",\"type\":\"xpath\",\"global\":true,\"default_value\":\"Documentation\"},\"lvl1\":\"header h1\",\"lvl2\":\"article h2\",\"lvl3\":\"article h3\",\"lvl4\":\"article h4\",\"lvl5\":\"article h5, article td:first-child\",\"lvl6\":\"article h6\",\"text\":\"article p, article li, article td:last-child\"},\"strip_chars\":\" .,;:#\",\"custom_settings\":{\"separatorsToIndex\":\"_\",\"attributesForFaceting\":[\"language\",\"version\",\"type\",\"docusaurus_tag\"],\"attributesToRetrieve\":[\"hierarchy\",\"content\",\"anchor\",\"url\",\"url_without_anchor\",\"type\"]},\"conversation_id\":[\"833762294\"],\"nb_hits\":46250}"
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "typesense.fullname" . }}-scraper
+  labels:
+  {{- include "typesense.labels" . | nindent 4 }}
+spec:
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          containers:
+          - env:
+            - name: CONFIG
+              valueFrom:
+                configMapKeyRef:
+                  key: config.json
+                  name: {{ include "typesense.fullname" . }}-scraper-config
+            - name: TYPESENSE_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  key: typesense-api-key
+                  name: {{ include "typesense.fullname" . }}-api-keys
+            - name: TYPESENSE_HOST
+              value: {{ .Release.Name }}-svc.{{ .Release.Namespace }}.svc.cluster.local
+            - name: TYPESENSE_PORT
+              value: "8108"
+            - name: TYPESENSE_PROTOCOL
+              value: http
+            image: typesense/docsearch-scraper:0.9.1
+            name: typesense-scraper
+            resources:
+                limits:
+                  cpu: 1024m
+                  memory: 512Mi
+                requests:
+                  cpu: 128m
+                  memory: 112Mi
+          restartPolicy: Never
+  schedule: {{ .Values.scraper.schedule | quote }}

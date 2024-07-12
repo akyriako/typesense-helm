@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "typesense.fullname" . }}-dashboard
+  labels:
+    app: typesense-dashboard
+  {{- include "typesense.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.dashboard.replicas }}
+  selector:
+    matchLabels:
+      app: typesense-dashboard
+    {{- include "typesense.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        app: typesense-dashboard
+      {{- include "typesense.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: typesense-dashboard
+          image: ghcr.io/bfritscher/typesense-dashboard:latest
+          resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "typesense.fullname" . }}-dashboard
+  labels:
+  {{- include "typesense.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  selector:
+    app: typesense-dashboard
+  {{- include "typesense.selectorLabels" . | nindent 4 }}
+  ports:
+  - name: http
+    port: 80
+    targetPort: 80

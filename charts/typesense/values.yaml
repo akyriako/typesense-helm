@@ -1,0 +1,19 @@
+typesense:
+  apiKey: 
+  apiPort: 8108
+  peeringPort: 8107
+  protocol: http
+  cors:
+    enabled: true
+    domains: ""
+  resetPeersOnError: true
+  storage:
+    size: 10Gi
+    storageClassName: default
+scraper:
+  schedule: '*/2 * * * *'
+  targetUrl: "http://localhost"
+  config: ""
+dashboard:
+  enabled: true
+  replicas: 1
