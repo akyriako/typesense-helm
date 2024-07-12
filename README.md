@@ -1,6 +1,20 @@
 # Typesense Helm Charts
 
-## Parameters
+## Components
+
+### Typesense
+
+### Typesense Peer Resolver
+
+### DocSearch Scraper
+
+### Typesense Dashboard
+
+## Deployment
+
+### Requirements
+
+### Parameters
 
 | Property                      | Required| default                             |
 | :--------                     | :-----: | ------:                             |
@@ -14,12 +28,13 @@
 | storage.size                  | true    | 10Gi                                |
 | storage.storageClassName      | true    | default                             |
 | typesense.replicas            | true    | 3                                   |
+| scraper.enabled               |         | false                               |
 | scraper.schedule              | true    | '*/2 * * * *'                       |
 | scraper.config                | true    | *see charts/typesense/values.yaml*  |
 | dashboard.enabled             |         | true                                |
 | dashboard.replicas            |         | 1                                   |
 
-## Installing the chart
+### Installing the chart
 
 ```shell
 helm repo add typesense-unofficial https://akyriako.github.io/typesense-helm
@@ -31,7 +46,7 @@ helm upgrade --install $RELEASE_NAME typesense-unofficial/typesense \
     --create-namespace 
 ```
 
-## Uninstalling the chart
+### Uninstalling the chart
 
 ```shell
 helm uninstall $RELEASE_NAME -n $NAMESPACE
