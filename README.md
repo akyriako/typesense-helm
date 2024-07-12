@@ -13,8 +13,8 @@
 
 
 > [!IMPORTANT]
-> This Helm Chart is unopinionated on how you are going to expose Typesense or Typesense Dashboard services, 
-> and that's why **no** LoadBalancer or Ingress is provided. Nevertheless, it is strongly recommended **not** exposing 
+> This Helm Chart is unopinionated on how you are going to expose *Typesense* or *Typesense Dashboard* services, 
+> and that's why **no** LoadBalancer or Ingress solution is provided. Nevertheless, **it is strongly recommended not exposing** 
 > Typesense service out of the cluster as is, but use a reverse proxy instead. {Here]() you can find an example.  
 
 ## Deployment
