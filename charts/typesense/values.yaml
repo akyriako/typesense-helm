@@ -13,7 +13,6 @@ typesense:
   replicas: 3
 scraper:
   schedule: '*/2 * * * *'
-  targetUrl: "http://localhost"
   config: '{ "index_name": "typesense_docs", "start_urls": [], "selectors": {}, "scrape_start_urls": true,   "strip_chars": " .,;:#"}'
 dashboard:
   enabled: true
