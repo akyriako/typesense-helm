@@ -1,6 +1,6 @@
 # Typesense Helm Charts
 
-## Configuration values
+## Parameters
 
 | Property                      | Required| default                             |
 | :--------                     | :-----: | ------:                             |
@@ -19,15 +19,20 @@
 | dashboard.enabled             |         | true                                |
 | dashboard.replicas            |         | 1                                   |
 
-
-## Deployment
+## Installing the chart
 
 ```shell
 helm repo add typesense-unofficial https://akyriako.github.io/typesense-helm
 helm repo update
 
-helm upgrade --install typesense typesense-unofficial/typesense \
-    --set typesense.apiKey=<Admin API Key> \
-    -n typesense \
+helm upgrade --install $RELEASE_NAME typesense-unofficial/typesense \
+    --set typesense.apiKey=$ADMIN_API_KEY \
+    -n $NAMESPACE \
     --create-namespace 
+```
+
+## Uninstalling the chart
+
+```shell
+helm uninstall $RELEASE_NAME -n $NAMESPACE
 ```
