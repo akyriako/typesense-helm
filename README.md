@@ -1,6 +1,13 @@
 # Typesense Helm Charts
 
+[Typesense](https://typesense.org/) is an open-source search engine, alternative to [Algolia](https://www.algolia.com/), known for its speed and typo-tolerance, providing a fast and user-friendly search experience. It supports real-time indexing, faceted search, and full-text search, making it ideal for applications needing robust search capabilities. With simple APIs and SDKs for easy integration, Typesense is also optimized for performance with large datasets. It supports multiple languages and can be set up in a clustered environment for high availability and scalability. Typesense's open-source nature allows for customization and community contributions.
+
+> [!NOTE]
+> This an **unofficial** Helm Chart.
+
 ## Components
+
+The following components will be installed using this Helm Chart:
 
 ### Typesense
 
