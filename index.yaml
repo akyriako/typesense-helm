@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  typesense:
+  - apiVersion: v2
+    appVersion: 26.0.0
+    created: "2024-07-13T10:45:14.204831455Z"
+    description: Typesense Helm Chart for HA Typesense Clusters
+    digest: a22e93b51b369cd611a7d316b486c4014c2c28f97b1fc35d6661881d7e016ea0
+    name: typesense
+    type: application
+    urls:
+    - https://github.com/akyriako/typesense-helm/releases/download/typesense-0.1.0/typesense-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-07-13T10:45:14.204837647Z"
