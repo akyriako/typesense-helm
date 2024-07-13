@@ -19,6 +19,12 @@ The following components will be installed using this Helm Chart:
 
 Typesense Peer Resolver is a sidecar container for Typesense, that automatically resets the nodes peer list for HA Typesense clusters in Kubernetes by identifying the new endpoints of the headless service. When restarting/upgrading Typesense nodes in a high-availability cluster scenario running in Kubernetes, DNS entries of the `StatefulSet` do not get resolved again with the new IP, preventing the pods/peers to rejoin the cluster, even if you have the `TYPESENSE_RESET_PEERS_ON_ERROR` flag enabled. With this sidecar, we do not need to provide a **node list** to Typesense in order because the sidecar will create one on the fly and update the necessary file in the mount that shares with the Typesense container (remember they live in the same pod).
 
+Typesense Peer Resolver will additionally install:
+
+* a Kubernetes `ServiceAccount` that will grant `get`, `list` and `watch` permission for `Endpoints`
+* a Kubernetes `Role` 
+* a Kubernetes `RoleBinding`
+
 > [!NOTE]
 > For more information on Typesense Peer Resolver check the [repository](https://github.com/akyriako/typesense-peer-resolver) of the project:
 
