@@ -1,6 +1,6 @@
 apiVersion: v2
 name: typesense
-description: Open Telekom Cloud Architecture Center (typesense)
+description: Typesense Helm Chart for HA Typesense Clusters
 # A chart can be either an 'application' or a 'library' chart.
 #
 # Application charts are a collection of templates that can be packaged into versioned archives

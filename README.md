@@ -15,7 +15,7 @@ The following components will be installed using this Helm Chart:
 * a headless `Service` (stems from the fact that Typesense needs to be installed as `StatefulSet`).
 * A number of `PersistentVolumeClaim` and `PersistentVolume` objects; their number match the replica count.
 
-> [!IMPORTANT]
+> [!NOTE]
 > This Helm Chart is unopinionated on how you are going to expose *Typesense* or *Typesense Dashboard* services, 
 > and that's why **no** LoadBalancer or Ingress solution is provided. Nevertheless, **it is strongly recommended not exposing** 
 > Typesense service out of the cluster as is, but use a reverse proxy instead. {Here]() you can find an example.  
@@ -42,10 +42,27 @@ The Helm Chart installs the customized version of DocSearch that works with Type
 
 ### Typesense Dashboard
 
+Typesense Dashboard is a very interesting open-source project that lets you manage and browse collections from a Web UI. More information on the project [repository](https://github.com/bfritscher/typesense-dashboard).
+
+The chart will install a `Deployment` and a `Service` for this component. It is up to you how to expose it.
 
 ## Deployment
 
 ### Requirements
+
+Only requirement (except a Kubernetes cluster of course ) is [Helm](https://helm.sh/) and this can be installed with the following ways:
+
+```shell
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+chmod 700 get_helm.sh
+/get_helm.sh
+```
+
+or via [brew](https://brew.sh/):
+
+```shell
+brew install helm
+```
 
 ### Parameters
 
