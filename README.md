@@ -1,6 +1,6 @@
 # Typesense Helm Charts
 
-[Typesense](https://typesense.org/) is an open-source search engine, alternative to [Algolia](https://www.algolia.com/), known for its speed and typo-tolerance, providing a fast and user-friendly search experience. It supports real-time indexing, faceted search, and full-text search, making it ideal for applications needing robust search capabilities. With simple APIs and SDKs for easy integration, Typesense is also optimized for performance with large datasets. It supports multiple languages and can be set up in a clustered environment for high availability and scalability. Typesense's open-source nature allows for customization and community contributions.
+[Typesense](https://typesense.org/) is an open-source search engine, alternative to [Algolia](https://www.algolia.com/), known for its speed and typo-tolerance, providing a fast and user-friendly search experience. It supports real-time indexing, faceted search, and full-text search, making it ideal for applications needing robust search capabilities. With simple APIs and SDKs for easy integration, Typesense is also optimized for performance with large datasets. It supports multiple languages and can be set up in a clustered environment for high availability and scalability.
 
 > [!NOTE]
 > This an **unofficial** Helm Chart.
@@ -10,6 +10,10 @@
 The following components will be installed using this Helm Chart:
 
 ### Typesense
+
+* Every`Pod` will be installed with two containers (default `replica` count is set to `3`). Typesense itself (version 26.0) and the Typesense Peer Resolver as a sidecar--see below.
+* a headless `Service` (stems from the fact that Typesense needs to be installed as `StatefulSet`).
+* A number of `PersistentVolumeClaim` and `PersistentVolume` objects; their number match the replica count.
 
 ### Typesense Peer Resolver
 
