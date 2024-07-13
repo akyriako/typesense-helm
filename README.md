@@ -21,8 +21,8 @@ Typesense Peer Resolver is a sidecar container for Typesense, that automatically
 
 Typesense Peer Resolver will additionally install:
 
-* a Kubernetes `ServiceAccount` that will grant `get`, `list` and `watch` permission for `Endpoints`
-* a Kubernetes `Role` 
+* a Kubernetes `ServiceAccount` 
+* a Kubernetes `Role` that grants `get`, `list` and `watch` permission for `Endpoints`
 * a Kubernetes `RoleBinding`
 
 > [!NOTE]
