@@ -32,8 +32,8 @@ Typesense Peer Resolver will additionally install:
 
 The Helm Chart installs the customized version of DocSearch that works with Typesense as a `CronJob`. It will periodically crawl and scrape the site(s) defined in `start_urls` of the **config.json** configuration file of the scraper. An additional `ConfigMap` is installed, that holds the value of the **config.json** configuration file required from DocSearch Scraper. You can provide you own configuration via the `scraper.config` value of the Helm Chart. The value should be in `JSON` format, but passed as `string`.
 
-> [!IMPORTANT]
-> If you enable the scraper, it will provision a scaffold **config.json** in the accompanying `ConfigMap`, and every `Job` spawned from the `CronJob` will exit as `Failed`. This doesn't mean that the DocSearch Scraper is not installed correctly, it is absolutely normal; it is just missing the required parameters to crawl your target site(s). For more information how to create and configure your own config.json file can be found [here](https://typesense.org/docs/guide/docsearch.html#create-a-docsearch-scraper-config-file). 
+> [!CAUTION]
+> If you enable the scraper, it will provision a scaffold **config.json** in the accompanying `ConfigMap`, and every `Job` spawned from the `CronJob` will exit as `Failed`. **This doesn't mean that the DocSearch Scraper is not installed correctly**, it is absolutely normal; it is just missing the required parameters to crawl your target site(s). For more information how to create and configure your own config.json file can be found [here](https://typesense.org/docs/guide/docsearch.html#create-a-docsearch-scraper-config-file). 
 
 ### Typesense Dashboard
 
