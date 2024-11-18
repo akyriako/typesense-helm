@@ -3,18 +3,17 @@ kind: Deployment
 metadata:
   name: {{ include "typesense.fullname" . }}-dashboard
   labels:
-    app: typesense-dashboard
+    app: {{ include "typesense.fullname" . }}-dashboard
   {{- include "typesense.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.dashboard.replicas }}
   selector:
     matchLabels:
-      app: typesense-dashboard
-    {{- include "typesense.selectorLabels" . | nindent 6 }}
+      app: {{ include "typesense.fullname" . }}-dashboard
   template:
     metadata:
       labels:
-        app: typesense-dashboard
+        app: {{ include "typesense.fullname" . }}-dashboard
       {{- include "typesense.selectorLabels" . | nindent 8 }}
     spec:
       containers:
@@ -31,8 +30,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: typesense-dashboard
-  {{- include "typesense.selectorLabels" . | nindent 4 }}
+    app: {{ include "typesense.fullname" . }}-dashboard
   ports:
   - name: http
     port: 9089
