@@ -10,10 +10,12 @@ spec:
   selector:
     matchLabels:
       app: {{ include "typesense.fullname" . }}-dashboard
+      {{- include "typesense.labels" . | nindent 6 }}
   template:
     metadata:
       labels:
         app: {{ include "typesense.fullname" . }}-dashboard
+        {{- include "typesense.labels" . | nindent 8 }}
     spec:
       containers:
         - name: typesense-dashboard
