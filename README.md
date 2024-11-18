@@ -11,7 +11,7 @@ The following components will be installed using this Helm Chart:
 
 ### Typesense
 
-* Every`Pod` will be installed with two containers (default `replica` count for the pods is set to `3`). Typesense itself (version `26.0`) and the Typesense Peer Resolver as a sidecar--see below.
+* Every`Pod` will be installed with two containers (default `replica` count for the pods is set to `3`). Typesense itself (version `27.1`) and the Typesense Peer Resolver as a sidecar--see below.
 * a headless `Service` (stems from the fact that Typesense needs to be installed as `StatefulSet`).
 * A number of `PersistentVolumeClaim` and `PersistentVolume` objects; their number match the replica count.
 

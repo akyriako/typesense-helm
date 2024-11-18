@@ -38,7 +38,7 @@ spec:
               value: {{ required "typesense.apiPort is required" .Values.typesense.apiPort | quote }}
             - name: TYPESENSE_PROTOCOL
               value: {{ required "typesense.protocol is required" .Values.typesense.protocol }}
-            image: typesense/docsearch-scraper:0.9.1
+            image: typesense/docsearch-scraper:0.11.0
             name: typesense-scraper
             resources:
                 limits:
