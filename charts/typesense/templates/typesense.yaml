@@ -65,6 +65,9 @@ spec:
             - "/opt/tspr"
             - "-namespace={{ .Release.Namespace }}"
             - "-service={{ include "typesense.fullname" . }}-sts-resolver"
+          volumeMounts:
+          - name: nodeslist
+            mountPath: /usr/share/typesense
         - name: typesense
           image: typesense/typesense:27.1
           command:
@@ -108,8 +111,8 @@ spec:
               cpu: 1024m
               memory: 512Mi
             requests:
-              cpu: 128m
-              memory: 112Mi
+              cpu: 256m
+              memory: 256Mi
           volumeMounts:
           - mountPath: /usr/share/typesense
             name: nodeslist
