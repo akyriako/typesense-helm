@@ -83,6 +83,7 @@ spec:
             - "--enable-cors"
             - "--cors-domains"
             - {{ required "typesense.cors.domains is required" .Values.typesense.cors.domains }}
+            {{ end }}
             {{ if .Values.typesense.resetPeersOnError }}
             - "--reset-peers-on-error"
             {{ end }}
