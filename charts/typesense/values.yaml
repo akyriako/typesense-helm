@@ -5,7 +5,7 @@ typesense:
   protocol: http
   cors:
     enabled: true
-    domains: ""
+    domains: "http://localhost:9089"
   resetPeersOnError: true
   storage:
     size: 10Gi
