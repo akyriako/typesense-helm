@@ -14,7 +14,6 @@ spec:
     metadata:
       labels:
         app: {{ include "typesense.fullname" . }}-dashboard
-      {{- include "typesense.selectorLabels" . | nindent 8 }}
     spec:
       containers:
         - name: typesense-dashboard
