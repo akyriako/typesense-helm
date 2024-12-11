@@ -1,3 +1,8 @@
+🚨🚨🚨**Repository Archived** 📦
+
+This repository has been archived and is no longer maintained. It has been replaced by [Typesense Kubernetes Operator](https://github.com/akyriako/typesense-operator), which will receive all future updates and improvements.
+Please stop using this Helm Chart and refer to the new repository. Thank you!
+
 # Typesense Helm Charts
 
 [Typesense](https://typesense.org/) is an open-source search engine, alternative to [Algolia](https://www.algolia.com/), known for its speed and typo-tolerance, providing a fast and user-friendly search experience. It supports real-time indexing, faceted search, and full-text search, making it ideal for applications needing robust search capabilities. With simple APIs and SDKs for easy integration, Typesense is also optimized for performance with large datasets. It supports multiple languages and can be set up in a clustered environment for high availability and scalability.
